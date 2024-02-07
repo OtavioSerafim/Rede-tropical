@@ -1,0 +1,35 @@
+{% extends "BlogApp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %} 
+    <div class="content-section">
+        <div class="d-flex align-items-center">
+            <img class="rounded-circle account-img" src={{user.profile.image.url}}>
+            <div>
+                <h2 class="account-heading">{{user.username}}</h2>
+                <p class="text-secondary">{{user.email}}</p>
+            </div>
+        </div>
+        <button class="btn btn-outline-info" id="update-profile-btn">Atualizar o Perfil</button>
+        <form method="POST" enctype="multipart/form-data" id="update-profile-form" style="display: none;">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Informações do Perfil</legend>
+                {{u_form|crispy}}
+                {{p_form|crispy}}
+            </fieldset>
+            <div class="form-group" style="margin-top: 10px;">
+                <button class="btn btn-outline-info" type="submit">Atualizar</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById("update-profile-btn").addEventListener("click", function() {
+            var form = document.getElementById("update-profile-form");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        });
+    </script>
+{% endblock content %}

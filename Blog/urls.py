@@ -1,0 +1,31 @@
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+
+from django.contrib.auth import views as auth_views
+#Import necessário para utilizar o aplicativo BlogApp
+from django.urls import path, include
+#Importando as views do app users para não precisar criar um url pro registro
+from users import views as user_views
+
+urlpatterns = [
+    
+    path('admin/', admin.site.urls),
+    #Criando o Caminho para a página de Registro
+    path('register/', user_views.register, name = 'register'),
+    #Criando o Caminho para a página de Perfil
+    path('profile/', user_views.profile, name = 'profile'),
+    #Criando o Caminho para a página de Login
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name = 'login'),
+    #Criando o Caminho para a página de Resposta de Logout
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name = 'logout'),
+    #Definindo o caminho padrão do home para o aplicativo BlogApp
+    path('', include('BlogApp.urls'))
+    
+    
+
+    
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
