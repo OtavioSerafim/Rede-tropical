@@ -8,10 +8,3 @@ class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['titulo', 'conteudo']
-
-    def save(self, commit=True):
-        post = super().save(commit=False)
-        # Faça qualquer manipulação adicional nos dados do post aqui, se necessário
-        if commit:
-            post.save()
-        return post

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 #Modelo para salvar os Post na database
 class Post(models.Model):
@@ -11,6 +12,9 @@ class Post(models.Model):
     
     def __str__(self):
         return self.titulo
+    
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs ={'pk':self.pk})
 
 class Teste(models.Model):
     nome = models.CharField(max_length=64)

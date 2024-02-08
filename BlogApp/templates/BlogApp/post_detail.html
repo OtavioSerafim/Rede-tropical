@@ -8,9 +8,20 @@
             <div class="article-metadata">
             <a class="mr-2" href="#">{{ object.autor }}</a>
             <small class="text-muted">{{ object.data|date:"d M Y H:i" }}</small>
-            </div>
+            
+            
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
             <h2 class="article-title">{{ object.titulo }}</h2>
-            <p class="article-content">{{ object.conteudo }}</p>
+            {% if object.autor == user %}
+                <div>
+                    <a class="btn btn-secondary btn-sm" href="{% url "post-update" object.id %}">Editar</a>
+                    <a class="btn btn-danger btn-sm" href="{% url "post-delete" object.id %}">Excluir</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <p class="article-content">{{ object.conteudo }}</p>
         </div>
         </div>
     </article>

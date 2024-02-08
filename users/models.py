@@ -14,8 +14,8 @@ class Profile(models.Model):
         return f'{self.user.username} Profile'
     
     #função para redimensionar a imagem salva em uma menor 300x300
-    def save(self):
-        super().save()
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         
         img = Image.open(self.image.path)
         
@@ -23,4 +23,3 @@ class Profile(models.Model):
             output_size = (300,300)
             img.thumbnail(output_size)
             img.save(self.image.path)
-        
