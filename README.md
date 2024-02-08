@@ -13,6 +13,7 @@ Este é um projeto de rede social baseado no X (anteriormente Twitter) com o obj
 - Django
 - HTML
 - CSS
+- Bootstrap
 
 ## Como executar o projeto
 
