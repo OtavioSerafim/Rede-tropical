@@ -1,2 +1,6 @@
 
 *.sqlite3
+
+*.json
+
+media/profile_pics/
