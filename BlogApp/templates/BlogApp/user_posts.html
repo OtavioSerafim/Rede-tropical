@@ -3,7 +3,7 @@
 {% block content %}
 	{% if page_user == user %}
 	<h1 class ="mb-3">Seus Posts</h1>
-	
+
 	{% else %}
 	<h1 class="mb-3">Posts de {{view.kwargs.username}} ({{page_obj.paginator.count}})</h1>
 
@@ -51,8 +51,6 @@
 			{% endif %}
 		</ul>
 	</div>
-	<p>{{user}}</p>
-	<p>{{page_user}}</p>
 	{% endblock content %}
 
 	
