@@ -6,7 +6,7 @@
         <img class= "rounded-circle article-img" src="{{object.autor.profile.image.url}}" alt="">
         <div class="media-body flex-grow-1"> 
             <div class="article-metadata">
-            <a class="mr-2" href="#">{{ object.autor }}</a>
+            <a class="mr-2" href="{% url "user-posts" post.autor.username %}">{{ post.autor }}</a>
             <small class="text-muted">{{ object.data|date:"d M Y H:i" }}</small>
             
             

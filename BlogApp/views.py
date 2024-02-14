@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.views.generic import DetailView, UpdateView, DeleteView
+from django.contrib.auth.models import User
+from django.views.generic import DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.paginator import Paginator
 from .models import Post
 from .forms import PostCreateForm
 
@@ -18,14 +20,52 @@ def home(request):
             return redirect('post-detail', pk=post.pk)
     else:
         form = PostCreateForm()
+    
+    #Cria a lista ordenada corretamente para ser usada pelo paginador    
+    post_list = Post.objects.all().order_by('-data')
+    #Pagina separando em grupos de 5 
+    paginator = Paginator(post_list,5)
+    #argumentos necessários para passar o obj de cada página
+    page_number = request.GET.get('page')
+    #Transforma cada página em um objeto que pode ser usado pelo código no html
+    page_obj = paginator.get_page(page_number)
+
 
     context = {
-        'posts': Post.objects.all(),
-        'form': form
+        'form': form,
+        'page_obj' : page_obj
     }
 
     return render(request, 'BlogApp/home.html', context)
 
+class UserPostListView(ListView):
+    model = Post
+    template_name = 'BlogApp/user_posts.html'
+    context_object_name = 'posts'
+    paginate_by = 5
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(autor=user).order_by('-data')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_user'] = get_object_or_404(User, username=self.kwargs.get('username'))
+        context['form'] = PostCreateForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = PostCreateForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.autor = request.user
+            post.save()
+            messages.success(request, f'Postado!')
+            return redirect('post-detail', pk=post.pk)
+        else:
+            return self.get(request, *args, **kwargs)
+    
+    
 #Cria a função para receber o request do usuário e chama a página about.html dentro da pasta template
 def about(request):
     return render(request, 'BlogApp/about.html', {'title': 'About'})

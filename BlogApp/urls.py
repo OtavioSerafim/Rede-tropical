@@ -1,10 +1,12 @@
 from django.urls import path
 from . import views
-from .views import PostDetailView, PostUpdateView, PostDeleteView
+from .views import PostDetailView, PostUpdateView, PostDeleteView, UserPostListView
 
 urlpatterns = [
     #Define a URL padrão do site como o diretório Home do arquivo views
     path('', views.home, name='Blog-Home'),
+    
+    path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
     
     #Cria caminhos para páginas individuais de cada post
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),

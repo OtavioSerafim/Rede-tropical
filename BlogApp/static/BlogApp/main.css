@@ -105,3 +105,20 @@ a.article-title:hover {
 .btn-outline-info:active {
   background-color: #038554;
 }
+
+.page-item .active{
+  background-color: #68ddbd;
+}
+
+.page-link{
+  color: #68ddbd;
+}
+
+li.page-item.active span.page-link {
+  background-color: #68ddbd;
+  border-color: #038554;
+}
+
+a.page-link:hover{
+  color: #038554;
+}
