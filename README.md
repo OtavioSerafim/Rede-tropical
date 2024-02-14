@@ -5,14 +5,16 @@ Este é um projeto de rede social baseado no X (anteriormente Twitter) com o obj
 ## Funcionalidades
 
 - Cadastro de usuários
+- Atualização de Perfil
 - Publicação de mensagens
-- Curtir mensagens
+- Edição e Exclusão de Mensagens
 
 ## Tecnologias utilizadas
 
 - Django
 - HTML
 - CSS
+- Bootstrap
 
 ## Como executar o projeto
 
