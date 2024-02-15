@@ -6,6 +6,7 @@ urlpatterns = [
     #Define a URL padrão do site como o diretório Home do arquivo views
     path('', views.home, name='Blog-Home'),
     
+    #Define a URL para página de posts de um usuário especifico
     path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
     
     #Cria caminhos para páginas individuais de cada post

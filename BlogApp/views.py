@@ -38,22 +38,29 @@ def home(request):
 
     return render(request, 'BlogApp/home.html', context)
 
+
+#Cria a view dos posts de um usuário especifico usando uma classe List View
 class UserPostListView(ListView):
     model = Post
     template_name = 'BlogApp/user_posts.html'
     context_object_name = 'posts'
     paginate_by = 5
     
+    #Função para pegar corretamente o query com os posts do usuário selecionado e filtrar corretamente
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(autor=user).order_by('-data')
 
+    #Função para passar informações de contexto necessárias para:
+        #Conferir se o usuário é o mesmo da página para permitir fazer postagens por ela
+        #Criar o formulário de postagem
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_user'] = get_object_or_404(User, username=self.kwargs.get('username'))
         context['form'] = PostCreateForm()
         return context
     
+    #Função que permite que o formulário de postagem cumpra o requisito de POST
     def post(self, request, *args, **kwargs):
         form = PostCreateForm(request.POST)
         if form.is_valid():
