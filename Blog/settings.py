@@ -1,6 +1,9 @@
 from pathlib import Path
 
 import os
+
+from .variaveis import Email_usuario, Senha_usuario
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -138,5 +141,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('USUARIO_EMAIL')
-EMAIL_HOST_PASSWORD = os.environ.get('USUARIO_SENHA')
+EMAIL_HOST_USER = Email_usuario
+EMAIL_HOST_PASSWORD = Senha_usuario

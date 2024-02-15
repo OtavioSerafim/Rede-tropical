@@ -3,4 +3,8 @@
 
 *.json
 
+*.env
+
 media/profile_pics/
+
+Blog/variaveis.py
