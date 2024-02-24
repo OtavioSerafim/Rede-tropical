@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comentario
 
 class PostCreateForm(forms.ModelForm):
     titulo = forms.CharField(label='Título')
@@ -7,3 +7,12 @@ class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['titulo', 'conteudo']
+        
+
+class CommentCreateForm(forms.ModelForm):
+    conteudo = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Digite seu comentário aqui...' }),label='Comentário')
+    
+
+    class Meta:
+        model = Comentario
+        fields = ['conteudo']
