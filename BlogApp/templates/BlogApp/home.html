@@ -10,7 +10,7 @@
 			<img class= "rounded-circle article-img" src="{{post.autor.profile.image.url}}" alt="">
 			<div class="media-body flex-grow-1"> 
 				<div class="article-metadata">
-					<a class="mr-2" href="{% url "user-posts" post.autor.username %}">{{ post.autor }}</a>
+					<a class="mr-2 text-decoration-none nomeusuario" href="{% url "user-posts" post.autor.username %}">{{ post.autor }}</a>
 					<small class="text-muted">{{ post.data|date:"d M Y H:i" }}</small>
 				</div>
 				<h2><a class="article-title" href="{% url "post-detail" post.id %}">{{ post.titulo }}</a></h2>

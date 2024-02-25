@@ -10,9 +10,11 @@ class PostCreateForm(forms.ModelForm):
         
 
 class CommentCreateForm(forms.ModelForm):
-    conteudo = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Digite seu comentário aqui...' }),label='Comentário')
+    conteudo = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Digite seu comentário aqui...',
+                                                            'rows':5,
+                                                            'cols':50,
+                                                            'style':'resize:none;'}),label='Comentário')
     
-
     class Meta:
         model = Comentario
         fields = ['conteudo']

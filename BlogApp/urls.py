@@ -22,5 +22,8 @@ urlpatterns = [
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'), 
     
     #Define o URL da página about do arquivo views
-    path('about/', views.about, name= 'Blog-About'), 
+    path('about/', views.about, name= 'Blog-About'),
+    
+    #
+    path('post/<int:pk>/comment/', views.post_comment, name='post-comment'), 
 ]

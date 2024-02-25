@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.views.generic import DetailView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from .models import Post
-from .forms import PostCreateForm
-
+from django.http import HttpResponse, JsonResponse
+from django.template.loader import render_to_string
+from .models import Post, Comentario
+from .forms import PostCreateForm, CommentCreateForm
 
 #Cria a função que recebe os dados do post e chama a página home.html dentro da pasta template utilizando dos dados dos Posts presentes no banco da dados
 def home(request):
@@ -80,12 +81,42 @@ def about(request):
 #Gera a view de um post isolado
 class PostDetailView(DetailView):
     model = Post
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentCreateForm()
+        context['comentarios'] = Comentario.objects.filter(post=self.object)
+        return context
 
-
-# class PostCreateView(CreateView):
-#     model = Post
-#     fields = ['titulo', 'conteudo']
-
+    def post(self, request, *args, **kwargs):
+        form = CommentCreateForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.post = self.get_object()
+            comentario.autor = request.user
+            comentario.save()
+            messages.success(request, 'Comentário postado com sucesso!')
+            return redirect('post-detail', pk=self.get_object().pk)
+        else:
+            messages.error(request, 'Erro ao postar comentário.')
+            return self.get(request, *args, **kwargs)
+        
+        
+def post_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    form = CommentCreateForm(request.POST)
+    if form.is_valid():
+        comentario = form.save(commit=False)
+        comentario.post = post
+        comentario.autor = request.user
+        comentario.save()
+        messages.success(request, 'Comentário postado com sucesso!')
+    else:
+        messages.error(request, 'Erro ao postar comentário.')
+    comentarios = Comentario.objects.filter(post=post)
+    form = CommentCreateForm()  # Adicione esta linha
+    html = render_to_string('BlogApp/comentarios_div.html', {'comentarios': comentarios, 'form': form})  # Modifique esta linha
+    return HttpResponse(html)
 
 #Cria a view de edição de Post
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

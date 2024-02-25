@@ -1,12 +1,17 @@
 {% extends "BlogApp/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
+{% load static %}
+
+    <script src="{% static "intercoolerjs/js/jquery.js" %}"></script>
+    <script src="{% static "intercoolerjs/js/intercooler.min.js" %}"></script>
 
     <article class="media content-section">
         <div class="d-flex"> 
         <img class= "rounded-circle article-img" src="{{object.autor.profile.image.url}}" alt="">
         <div class="media-body flex-grow-1"> 
             <div class="article-metadata">
-            <a class="mr-2" href="{% url "user-posts" post.autor.username %}">{{ post.autor }}</a>
+            <a class="mr-2 text-decoration-none nomeusuario" href="{% url "user-posts" post.autor.username %}">{{ post.autor }}</a>
             <small class="text-muted">{{ object.data|date:"d M Y H:i" }}</small>
             
             
@@ -25,6 +30,40 @@
         </div>
         </div>
     </article>
+
+    <div id="comentarios-div">
+        <h5>Comentários ({{comentarios.count}})</h5>
+        {% if comentarios %}
+            {% for comentario in comentarios %}
+            <div class="media comentario-div">
+                <img class="rounded-circle article-img comentario-img" src="{{comentario.autor.profile.image.url}}" alt="">
+                <small>{{comentario.conteudo}}</small>
+                <div class="media-body ml-3">
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'user-posts' comentario.autor.username %}" class="mr-2 text-decoration-none nomeusuario">{{comentario.autor.username}}</a>
+                    </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+        {% else %}
+            <p>Nenhum comentário ainda... Seja o primeiro a comentar!</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <form method="POST" ic-post-to="{% url 'post-comment' object.id %}" ic-trigger-on="submit" ic-target="#comentarios-div">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4 h6">Fazer um Comentário</legend>
+                    {{form|crispy}}
+                </fieldset>
+                <div class="form-group mt-4 mb-2">
+                    <button class="btn btn-outline-info" type="submit">Comentar</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
     
 
 {% endblock content %}

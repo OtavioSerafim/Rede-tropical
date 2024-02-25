@@ -122,3 +122,17 @@ li.page-item.active span.page-link {
 a.page-link:hover{
   color: #038554;
 }
+
+.comentario-img {
+  width: 40px;
+  height: 40px;
+}
+
+.comentario-div {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.nomeusuario{
+  color: #038554;
+}
